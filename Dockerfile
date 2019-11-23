@@ -21,11 +21,11 @@ RUN apt-get -yq install fonts-liberation2 # free equivalent of microsoft fonts
 RUN apt-get -yq install jq # json parser
 
 # Set the working directory
-WORKDIR ~/project
+WORKDIR /root/project
 
-COPY src ~/src
-COPY emacs.d/ ~/.emacs.d
+COPY src /root/src
+COPY emacs.d/ /root/.emacs.d
 
-RUN chmod +x -R ~/src/
+RUN chmod +x -R /root/src/
 
 CMD "~/src/run.sh"
