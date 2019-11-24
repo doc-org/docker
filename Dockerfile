@@ -28,4 +28,4 @@ COPY emacs.d/ /root/.emacs.d
 
 RUN chmod +x -R /root/src/
 
-CMD "~/src/run.sh"
+CMD "/root/src/run.sh"
