@@ -5,6 +5,9 @@ emacs \
     -l ~/.emacs.d/init.el \
     main.org -f org-latex-export-to-latex --kill
 
+# add header.tex dependency
+sed -i '5s/^/\\input{header.tex}\n/' main.tex
+
 PDF_FILENAME=$(jq -r .pdf_filename config.json)
 BUILD_DIR=build
 
