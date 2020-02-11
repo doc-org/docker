@@ -24,7 +24,6 @@ RUN apt-get -yq install jq # json parser
 WORKDIR /root/project
 
 COPY src /root/src
-COPY emacs.d/ /root/.emacs.d
 
 RUN chmod +x -R /root/src/
 
