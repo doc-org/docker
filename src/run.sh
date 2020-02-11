@@ -1,12 +1,16 @@
 #!/bin/sh
 
-emacs \
+# t enables body-only option
+emacs main.org \
     --batch \
-    -l ~/.emacs.d/init.el \
-    main.org -f org-latex-export-to-latex --kill
+    --eval \
+    "(org-latex-export-to-latex nil nil nil t)" --kill
 
 # add header.tex dependency
-sed -i '5s/^/\\input{header.tex}\n/' main.tex
+sed -i '1 s/^/\\input{header.tex}\n\n/' main.tex
+sed -i '1 s/^/\\begin{document}\n\\maketitle\n/' main.tex
+
+echo -e "\n\\\end{document}" >> main.tex
 
 PDF_FILENAME=$(jq -r .pdf_filename config.json)
 BUILD_DIR=build
