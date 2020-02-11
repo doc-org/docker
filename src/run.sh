@@ -1,18 +1,32 @@
 #!/bin/sh
 
-# t enables body-only option
+CONFIG_FILE=config.json
+
+AUTO_LATEX=$(jq -r .auto_latex "$CONFIG_FILE")
+
+if [ "$AUTO_LATEX" = true ]
+then
+    BODY_ONLY="t"
+else
+    BODY_ONLY="nil"
+fi
+
 emacs main.org \
     --batch \
     --eval \
-    "(org-latex-export-to-latex nil nil nil t)" --kill
+    "(org-latex-export-to-latex nil nil nil "$BODY_ONLY")" --kill
 
-# add header.tex dependency
-sed -i '1 s/^/\\input{header.tex}\n\n/' main.tex
-sed -i '1 s/^/\\begin{document}\n\\maketitle\n/' main.tex
+if [ "$BODY_ONLY" = "nil" ]
+then
+    # add header.tex dependency
+    sed -i '1 s/^/\\input{header.tex}\n\n/' main.tex
 
-echo -e "\n\\\end{document}" >> main.tex
+    sed -i '1 s/^/\\begin{document}\n\\maketitle\n/' main.tex
 
-PDF_FILENAME=$(jq -r .pdf_filename config.json)
+    echo -e "\n\\\end{document}" >> main.tex
+fi
+
+PDF_FILENAME=$(jq -r .pdf_filename "$CONFIG_FILE")
 BUILD_DIR=build
 
 latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" main.tex # compile
