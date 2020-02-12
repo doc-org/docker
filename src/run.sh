@@ -27,6 +27,12 @@ then
 fi
 
 PDF_FILENAME=$(jq -r .pdf_filename "$CONFIG_FILE")
+
+if [ -z "$PDF_FILENAME" ]
+then
+    PDF_FILENAME="main"
+fi
+
 BUILD_DIR=build
 
 latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" main.tex # compile
