@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:buster
 
 ARG DEBIAN_FRONTEND=noninteractive
 
