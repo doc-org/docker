@@ -2,7 +2,7 @@
 
 CONFIG_FILE=config.json
 
-AUTO_LATEX=$(jq -r .auto_latex "$CONFIG_FILE")
+AUTO_LATEX=$(jq -r .auto_latex ${CONFIG_FILE})
 
 if [ "$AUTO_LATEX" = true ]
 then
@@ -23,7 +23,7 @@ then
     echo -e "\n\\\end{document}" >> main.tex
 fi
 
-PDF_FILENAME=$(jq -r .pdf_filename "$CONFIG_FILE")
+PDF_FILENAME=$(jq -r .pdf_filename ${CONFIG_FILE})
 
 if [ -z "$PDF_FILENAME" ]
 then
