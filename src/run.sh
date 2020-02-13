@@ -16,7 +16,7 @@ emacs main.org \
     --eval \
     "(org-latex-export-to-latex nil nil nil "$BODY_ONLY")" --kill
 
-if [ "$BODY_ONLY" = "nil" ]
+if [ "$BODY_ONLY" = "t" ]
 then
     sed -i '1 s/^/\\input{header.tex}\n\n\\begin{document}\n\\maketitle\n/' main.tex
 
