@@ -6,9 +6,9 @@ AUTO_LATEX=$(jq -r .auto_latex "$CONFIG_FILE")
 
 if [ "$AUTO_LATEX" = true ]
 then
-    BODY_ONLY="t"
-else
     BODY_ONLY="nil"
+else
+    BODY_ONLY="t"
 fi
 
 emacs main.org \
