@@ -30,7 +30,7 @@ then
     PDF_FILENAME="main"
 fi
 
-BUILD_DIR=build
+BUILD_DIR="build"
 
 latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" main.tex # compile
 
