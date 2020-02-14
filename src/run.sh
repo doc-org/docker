@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE=config.json
+CONFIG_FILE="config.json"
 
 AUTO_LATEX=$(jq -r .auto_latex ${CONFIG_FILE})
 
@@ -35,5 +35,6 @@ BUILD_DIR="build"
 latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" main.tex # compile
 
 mkdir "$BUILD_DIR"
-mv main.pdf ""$BUILD_DIR"/"$PDF_FILENAME".pdf"
+OUTPUT_PDF=""$BUILD_DIR"/"$PDF_FILENAME".pdf"
+mv main.pdf "$OUTPUT_PDF"
 mv main.fdb_latexmk main.fls main.log main.tex main.aux "$BUILD_DIR"
