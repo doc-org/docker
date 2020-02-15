@@ -18,7 +18,7 @@ emacs main.org \
 
 if [ "$BODY_ONLY" = "t" ]
 then
-    sed -i '1 s/^/\\input{header.tex}\n\n\\begin{document}\n\\maketitle\n/' main.tex
+    sed -i '1 s/^/\\input{header.tex}\n\n\\begin{document}\n/' main.tex
 
     echo -e "\n\\\end{document}" >> main.tex
 fi
