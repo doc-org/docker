@@ -24,15 +24,22 @@ then
 fi
 
 PDF_FILENAME=$(jq -r .pdf_filename ${CONFIG_FILE})
-
 if [ -z "$PDF_FILENAME" ]
 then
     PDF_FILENAME="main"
 fi
 
+SHELL_ESCAPE=$(jq -r .auto_latex ${CONFIG_FILE})
+if [ "$SHELL_ESCAPE" = true ]
+then
+    SHELL_ESCAPE="-shell-escape"
+else
+    SHELL_ESCAPE=""
+fi
+
 BUILD_DIR="build"
 
-latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" main.tex # compile
+latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" "$SHELL_ESCAPE" main.tex # compile
 
 mkdir -p "$BUILD_DIR"
 OUTPUT_PDF=""$BUILD_DIR"/"$PDF_FILENAME".pdf"
