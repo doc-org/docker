@@ -2,7 +2,13 @@
 
 CONFIG_FILE="config.json"
 
-AUTO_LATEX=$(jq -r .auto_latex ${CONFIG_FILE})
+if [ -f "$CONFIG_FILE" ]
+then
+    AUTO_LATEX=$(jq -r .auto_latex ${CONFIG_FILE})
+    # read pdf_filename or "main" if field is not present
+    PDF_FILENAME=$(jq -r '[.pdf_filename // "main" ]|@tsv' ${CONFIG_FILE})
+    SHELL_ESCAPE=$(jq -r .shell_escape ${CONFIG_FILE})
+fi
 
 if [ "$AUTO_LATEX" = true ]
 then
@@ -23,13 +29,11 @@ then
     echo -e "\n\\\end{document}" >> main.tex
 fi
 
-PDF_FILENAME=$(jq -r .pdf_filename ${CONFIG_FILE})
 if [ -z "$PDF_FILENAME" ]
 then
     PDF_FILENAME="main"
 fi
 
-SHELL_ESCAPE=$(jq -r .shell_escape ${CONFIG_FILE})
 if [ "$SHELL_ESCAPE" = true ]
 then
     SHELL_ESCAPE="-shell-escape"
