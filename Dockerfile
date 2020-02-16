@@ -20,6 +20,9 @@ RUN apt-get -yq install fonts-liberation2 # free equivalent of microsoft fonts
 
 RUN apt-get -yq install jq # json parser
 
+# create graphs with latex
+RUN apt-get -yq install graphviz
+
 # Set the working directory
 WORKDIR /root/project
 
