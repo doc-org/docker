@@ -29,7 +29,7 @@ then
     PDF_FILENAME="main"
 fi
 
-SHELL_ESCAPE=$(jq -r .auto_latex ${CONFIG_FILE})
+SHELL_ESCAPE=$(jq -r .shell_escape ${CONFIG_FILE})
 if [ "$SHELL_ESCAPE" = true ]
 then
     SHELL_ESCAPE="-shell-escape"
