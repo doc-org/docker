@@ -23,6 +23,9 @@ RUN apt-get -yq install jq # json parser
 # create graphs with latex
 RUN apt-get -yq install graphviz
 
+# syntax highlight
+RUN apt-get -yq install python3-pygments
+
 # Set the working directory
 WORKDIR /root/project
 
