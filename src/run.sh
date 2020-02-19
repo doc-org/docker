@@ -17,8 +17,18 @@ else
     BODY_ONLY="t"
 fi
 
+EMACS_FILE="init.el"
+
+if [ -f "$EMACS_FILE" ]
+then
+    EMACS_INIT="-l "$EMACS_FILE""
+else
+    EMACS_INIT=
+fi
+
 emacs main.org \
     --batch \
+    ${EMACS_INIT} \
     --eval \
     "(org-latex-export-to-latex nil nil nil "$BODY_ONLY")" --kill
 
