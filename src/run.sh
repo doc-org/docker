@@ -1,61 +1,61 @@
 #!/bin/bash
 
-CONFIG_FILE="config.json"
+config_file="config.json"
 
-if [ -f "$CONFIG_FILE" ]
+if [ -f "$config_file" ]
 then
-    AUTO_LATEX=$(jq -r .auto_latex ${CONFIG_FILE})
+    auto_latex=$(jq -r .auto_latex ${config_file})
     # read pdf_filename or "main" if field is not present
-    PDF_FILENAME=$(jq -r '[.pdf_filename // "main" ]|@tsv' ${CONFIG_FILE})
-    SHELL_ESCAPE=$(jq -r .shell_escape ${CONFIG_FILE})
+    pdf_filename=$(jq -r '[.pdf_filename // "main" ]|@tsv' ${config_file})
+    shell_escape=$(jq -r .shell_escape ${config_file})
 fi
 
-if [ "$AUTO_LATEX" = true ]
+if [ "$auto_latex" = true ]
 then
-    BODY_ONLY="nil"
+    body_only="nil"
 else
-    BODY_ONLY="t"
+    body_only="t"
 fi
 
-EMACS_FILE="init.el"
+emacs_file="init.el"
 
-if [ -f "$EMACS_FILE" ]
+if [ -f "$emacs_file" ]
 then
-    EMACS_INIT="-l "$EMACS_FILE""
+    emacs_init="-l "$emacs_file""
 else
-    EMACS_INIT=
+    emacs_init=
 fi
 
 emacs main.org \
     --batch \
-    ${EMACS_INIT} \
+    ${emacs_init} \
     --eval \
-    "(org-latex-export-to-latex nil nil nil "$BODY_ONLY")" --kill
+    "(org-latex-export-to-latex nil nil nil "$body_only")" --kill
 
-if [ "$BODY_ONLY" = "t" ]
+if [ "$body_only" = "t" ]
 then
     sed -i '1 s/^/\\input{header.tex}\n\n\\begin{document}\n/' main.tex
 
     echo -e "\n\\\end{document}" >> main.tex
 fi
 
-if [ -z "$PDF_FILENAME" ]
+if [ -z "$pdf_filename" ]
 then
-    PDF_FILENAME="main"
+    pdf_filename="main"
 fi
 
-if [ "$SHELL_ESCAPE" = true ]
+if [ "$shell_escape" = true ]
 then
-    SHELL_ESCAPE="-shell-escape"
+    shell_escape="-shell-escape"
 else
-    SHELL_ESCAPE=""
+    shell_escape=""
 fi
 
-BUILD_DIR="build"
+build_dir="build"
 
-latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" "$SHELL_ESCAPE" main.tex # compile
+latexmk -quiet -pdf -pdflatex="pdflatex -interaction=nonstopmode" "$shell_escape" main.tex # compile
 
-mkdir -p "$BUILD_DIR"
-OUTPUT_PDF=""$BUILD_DIR"/"$PDF_FILENAME".pdf"
-mv main.pdf "$OUTPUT_PDF"
-mv main.fdb_latexmk main.fls main.log main.tex main.aux "$BUILD_DIR"
+mkdir -p "$build_dir"
+output_pdf=""$build_dir"/"$pdf_filename".pdf"
+mv main.pdf "$output_pdf"
+mv main.fdb_latexmk main.fls main.log main.tex main.aux "$build_dir"
