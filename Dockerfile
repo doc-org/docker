@@ -1,36 +1,30 @@
-FROM debian:buster
+FROM debian:buster-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get -q update
-RUN apt-get -yq upgrade
+# Installed packages
+# - emacs without GUI support (for org mode)
+# - whole latex suite
+# - fonts-liberation2: free equivalent of microsoft fonts
+# - graphviz: create graphs with latex
+# - jq: json output parser
+# - python3-pygments: syntax highlight
+RUN apt -yq update && apt -yq upgrade && \
+    apt install -yq emacs-nox \
+        texlive-full texlive-humanities texlive-pictures texlive-publishers texlive-science \
+        fonts-liberation2 \
+        graphviz \
+        jq \
+        python3-pygments
 
-# install emacs for org mode
-RUN apt-get -yq install emacs
-
-# install latex
-RUN apt-get -yq install texlive-full
-RUN apt-get -yq install texlive-humanities
-RUN apt-get -yq install texlive-pictures
-RUN apt-get -yq install texlive-publishers
-RUN apt-get -yq install texlive-science
-
-# install fonts
-RUN apt-get -yq install fonts-liberation2 # free equivalent of microsoft fonts
-
-RUN apt-get -yq install jq # json parser
-
-# create graphs with latex
-RUN apt-get -yq install graphviz
-
-# syntax highlight
-RUN apt-get -yq install python3-pygments
+# Cleanup apt cache to reclaim some space
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /root/project
 
 COPY src /root/src
 
-RUN chmod +x -R /root/src/
+RUN chmod +x /root/src/run.sh
 
 CMD "/root/src/run.sh"
